@@ -1,9 +1,52 @@
-# Safety at construction sites. Monitoring the availability of helmets for workers
-## Formulation of the problem
-The aim of this project is to detect the presence of helmets among workers at a construction site, with the goal of reducing accidents and ensuring safety compliance.
-The primary quality metric will be mAP (mean average precision) since the task involves detecting three classes with imbalanced representation, making this metric the most comprehensive reflection of model quality.
-## Dataset information and applied models
-The images and annotations were taken from the website https://public.roboflow.com/object-detection/hard-hat-workers/1
-In this study, we will explore solutions based on the following architectures: SSD 300 (https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection), YOLO(https://www.ultralytics.com/ru) to determine the best approach.
-We have annotated data suitable for testing SSD300 (in the PASCAL VOC format), YOLOv8 (with txt annotations and yaml). Our dataset consists of 7041 images, with 5269 designated for training and 1766 for testing.
-As we can see, we have 3 classes that we will be detecting, and based on the class, we will make decisions accordingly (penalties for the worker/ignoring, etc.).
+# Проект по контролю наличия касок у рабочих на строительных площадках
+
+## Обзор
+
+Этот проект направлен на детекцию наличия касок у рабочих на строительных площадках с целью сокращения несчастных случаев и соблюдения техники безопасности. Система использует технологии компьютерного зрения и продвинутые модели машинного обучения для анализа видео с рабочих площадок в реальном времени.
+
+## Цели
+
+Целью проекта является разработка модели, способной эффективно детектировать наличие касок у рабочих. Основной метрикой качества является mAP (mean Average Precision), которая позволяет точно оценивать эффективность модели в условиях дисбаланса классов.
+
+## Данные
+
+Для обучения и тестирования были использованы размеченные данные, включающие 7041 изображение. Данные разделены на тренировочную (5269 изображений) и тестовую (1766 изображений) выборки. В проекте используются три класса объектов для детекции: наличие каски, отсутствие каски и человек.
+
+## Методология
+
+### Используемые модели
+
+1. **SSD300**: Популярная архитектура для детекции объектов, основанная на предобученной сети VGG-16. Основное преимущество модели — возможность обнаруживать объекты в один проход по изображению, что делает её эффективной для задач реального времени. Однако она может испытывать трудности с обнаружением мелких объектов и нестандартных форм.
+
+2. **YOLOv8**: Предпоследняя версия популярного алгоритма YOLO, отличающаяся высокой скоростью и точностью обработки изображений в один проход. Модель хорошо справляется с детекцией объектов в реальном времени, но может пропускать мелкие объекты или объекты, находящиеся близко друг к другу.
+
+3. **VFNet**: Современная архитектура, использующая Varifocal Loss для повышения точности классификации и локализации объектов. Модель может адаптироваться к сложным условиям и разнообразным наборам данных, но требует мощных вычислительных ресурсов и тщательной настройки.
+
+### Подготовка данных
+
+Для каждой модели данные были подготовлены с учетом специфики архитектуры. Были проведены следующие этапы:
+
+- Парсинг аннотаций и создание необходимых файлов для обучения моделей.
+- Настройка гиперпараметров и запуск обучения на тренировочных данных.
+
+## Результаты
+
+- **SSD300**: mAP = 0.582. Модель показала неплохие результаты, но требует тонкой настройки порога детекции.
+- **YOLOv8**: mAP = 0.644. Модель справилась лучше SSD и обладает высокой скоростью обучения, но испытывает трудности с детекцией мелких объектов.
+- **VFNet**: mAP = 0.025. Модель смогла обнаружить только один класс — "person", и требует дообучения для достижения приемлемых результатов.
+
+## Заключение
+
+В рамках проекта была разработана система детекции касок на строительных площадках для повышения безопасности рабочих. Несмотря на то, что не все модели продемонстрировали удовлетворительные результаты, дальнейшее дообучение и использование более производительного оборудования могут значительно улучшить эффективность системы.
+
+## Перспективы
+
+- Дальнейшее дообучение модели VFNet для улучшения её результатов.
+- Внедрение идентификации персоналий для контроля выполнения работ и управления поощрениями и наказаниями.
+
+## Использованные источники
+
+1. [MMDetection Repository](https://github.com/open-mmlab/mmdetection/tree/main)
+2. [Ultralytics YOLO Documentation](https://www.ultralytics.com/ru)
+3. [PyTorch SSD Implementation](https://github.com/sgrvinod/a-PyTorch-Tutorial-to-Object-Detection)
+4. PyTorch Documentation
